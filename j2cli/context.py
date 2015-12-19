@@ -175,7 +175,15 @@ def read_context_data(format, f, environ):
     # Read data string stream
     data_string = f.read()
 
+    #Apply environment variables
+    data_string_env = _parse_env(environ)
+
+    #Create dictionary with environment variables and from input file
+    dall = {}
+    dall.update(data_string_env)
+    dall.update(FORMATS[format](data_string))
+
     # Parse it
     if format not in FORMATS:
         raise ValueError('{} format unavailable'.format(format))
-    return FORMATS[format](data_string)
+    return dall
